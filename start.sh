@@ -1,3 +1,3 @@
 #!/bin/sh
-python app/API/app.py &
+python app/app.py &
 streamlit run app/app_streamlit.py
