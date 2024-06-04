@@ -1,0 +1,6 @@
+deepl
+flask
+logging
+pandas
+requests
+
