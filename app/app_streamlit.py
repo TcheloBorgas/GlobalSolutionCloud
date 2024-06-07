@@ -25,7 +25,7 @@ def img_to_base64(img_path):
         return base64.b64encode(img_file.read()).decode()
 
 # Converter a imagem para base64
-encoded_image = img_to_base64(r'C:\Users\pytho\Documents\GitHub\GloballSolutionCloud\app\streamlit\data\fundo.jpg')  # Ajuste o caminho conforme necessário
+encoded_image = img_to_base64(r'..\template\fundo.jpg')  # Ajuste o caminho conforme necessário
 
 def add_bg_from_local():
     st.markdown(
