@@ -1,7 +1,21 @@
-from flask import Flask, request
+#━━━━━━━━━❮Bibliotecas❯━━━━━━━━━
 import requests
 import streamlit as st
 import base64
+import requests
+import pandas as pd
+import folium
+import deepl
+
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+from streamlit_folium import folium_static
+from flask import Flask, request
+#━━━━━━━━━━━━━━❮◆❯━━━━━━━━━━━━━━
+
+
+
+#━━━━━━━━━━━━━━❮Data❯━━━━━━━━━━━━━━
 
 dados = {
     "Temperatura da Água (°C)": [16.46, 18.50, 24.51, 17.20, 23.39, 10.78, 25.66, 12.48, 27.90, 14.11, 19.30, 21.12, 26.49, 13.55, 22.88, 11.67, 20.03, 29.55, 15.67, 28.23],
@@ -10,6 +24,8 @@ dados = {
     "pH": [8.09, 7.96, 8.34, 7.69, 7.88, 8.10, 8.23, 7.75, 8.45, 8.00, 7.94, 8.11, 8.29, 7.76, 8.12, 7.81, 8.04, 8.40, 7.89, 8.37],
     "Presença de Espécie Marinha": [0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1]
 }
+#━━━━━━━━━━━━━━❮◆❯━━━━━━━━━━━━━━
+
 
 
 quantidade_presenca_marinha = dados["Presença de Espécie Marinha"].count(1)
@@ -17,8 +33,15 @@ quantidade_presenca_marinha = dados["Presença de Espécie Marinha"].count(1)
 
 
 
-# URL da API Flask (altere conforme necessário)
+#━━━━━━━━━━━━━━❮Conexão com API❯━━━━━━━━━━━━━━
+
 API_URL = "http://localhost:5000"
+
+
+#━━━━━━━━━━━━━━❮◆❯━━━━━━━━━━━━━━
+
+
+#━━━━━━━━━━━━━━❮Estilização Front❯━━━━━━━━━━━━━━
 
 def img_to_base64(img_path):
     with open(img_path, "rb") as img_file:
@@ -43,6 +66,9 @@ def add_bg_from_local():
 # Chama a função para adicionar a imagem de fundo
 add_bg_from_local()
 
+#━━━━━━━━━━━━━━❮◆❯━━━━━━━━━━━━━━
+
+
 st.title("Análise de Dados Marinhos")
 
 if st.button("Realizar Análise Completa"):
@@ -58,22 +84,21 @@ if st.button("Realizar Análise Completa"):
 
 
 
-import streamlit as st
-import requests
-import pandas as pd
-import folium
-from streamlit_folium import folium_static
-import deepl
 
-# Configurar a chave de autenticação da API DeepL
-auth_key = "023f48c8-7767-4df8-b643-d77f0cf35c19:fx"  # Substitua pela sua chave
+
+#━━━━━━━━━━━━━━❮Configuração API de Tradução❯━━━━━━━━━━━━━━
+auth_key = "023f48c8-7767-4df8-b643-d77f0cf35c19:fx"  
 translator = deepl.Translator(auth_key)
+#━━━━━━━━━━━━━━❮◆❯━━━━━━━━━━━━━━
+
+
 
 st.title("Monitoramento de Poluição Marinha")
 
-# Função para obter dados da OpenAQ API
+#━━━━━━━━━━━━━━❮Funções de Funcionalidade❯━━━━━━━━━━━━━━
+
 def get_openaq_data(country):
-    url = f"http://localhost:5000/api/openaq?country={country}"  # URL da API Flask
+    url = f"http://localhost:5000/api/openaq?country={country}"  
     try:
         response = requests.get(url)
         response.raise_for_status()  # Verifica se houve um erro na resposta
@@ -83,7 +108,7 @@ def get_openaq_data(country):
 
 # Função para obter a lista de países disponíveis na OpenAQ API
 def get_countries():
-    url = "http://localhost:5000/api/countries"  # URL da API Flask
+    url = "http://localhost:5000/api/countries"  
     try:
         response = requests.get(url)
         response.raise_for_status()  # Verifica se houve um erro na resposta
@@ -117,7 +142,10 @@ def format_openaq_data(data):
     else:
         return pd.DataFrame()
 
-# Obter lista de países
+
+#━━━━━━━━━━━━━━❮◆❯━━━━━━━━━━━━━━
+
+#━━━━━━━━━━━━━━❮Renderização Mapa e países❯━━━━━━━━━━━━━━
 countries_data = get_countries()
 if "error" in countries_data:
     st.error(countries_data["error"])
